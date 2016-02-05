@@ -1,21 +1,24 @@
+#!/usr/bin/env python2.7
+
 import bibliopixel
+from bibliopixel.drivers import serial_driver
+from bibliopixel.led import *
+
+import ticker
 
 # Causes frame timing information to be output
 bibliopixel.log.setLogLevel(bibliopixel.log.DEBUG)
 
 #Load driver for the AllPixel
-from bibliopixel.drivers import serial_driver
 
 #set number of pixels & LED type here
-driver = serial_driver.DriverSerial(num = 80, type = LEDTYPE.LPD8806)
+driver = serial_driver.DriverSerial(num=80, type=serial_driver.LEDTYPE.LPD8806)
 
 #load the LEDStrip class
-from bibliopixel.led import *
 led = LEDStrip(driver)
 
 #load channel test animation
-from bibliopixel.animation import StripChannelTest
-anim = StripChannelTest(led)
+anim = ticker.Ticker(led)
 
 try:
     #run the animation
