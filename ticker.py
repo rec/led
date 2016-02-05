@@ -34,12 +34,13 @@ class Ticker(animation.BaseStripAnim):
         self.selected = (self.selected + increment) % self._led.numLEDs
         print('Selected is now', self.selected)
 
-    def step(self, amt = 1):
+    def step(self, amt=1):
         if not self._step:
             self.setme()
 
         if self.flash_selected:
-            self._led.set(self.selected, self.selected_color)
+            selected = self.selected
+            self._led.set(selected, self.selected_color)
 
         if self.flash_toggle_requested:
             self.flash_toggle_requested = False
@@ -49,12 +50,16 @@ class Ticker(animation.BaseStripAnim):
         self._step += 1
         if not self.running:
             return
+
         if self.period_in_steps:
             if self.last_scroll >= self.period_in_steps:
                 self.last_scroll = 0
                 self.scroll(self.direction)
             else:
                 self.last_scroll += 1
+
+        if self.flash_selected:
+            self.selected_color = self._led.get(selected)
 
     def reverse(self):
         self.direction = -self.direction
