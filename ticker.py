@@ -6,7 +6,7 @@ class Ticker(animation.BaseStripAnim):
         self._internalDelay = 4
         self.running = True
         self.last_scroll = 0
-        self.speed_in_steps = 125
+        self.period_in_steps = 125
         self.direction = 1
 
     def scroll(self, steps):
@@ -20,11 +20,19 @@ class Ticker(animation.BaseStripAnim):
             self.setme()
 
         self._step += 1
-        if self.last_scroll >= self.speed_in_steps:
-            self.last_scroll = 0
-            self.scroll(self.direction)
-        else:
-            self.last_scroll += 1
+        if self.period_in_steps:
+            if self.last_scroll >= self.period_in_steps:
+                self.last_scroll = 0
+                self.scroll(self.direction)
+            else:
+                self.last_scroll += 1
+
+    def change_speed(self, increment):
+        if self.direction < 0:
+            increment = -increment
+        self.period_in_steps *= 1.0 + increment / 100.0
+        if self.period_in_steps < 1:
+            self.period_in_steps = 0
 
     def setme(self):
         self._led.set(0, colors.Red)
