@@ -82,5 +82,6 @@ class Ticker(animation.BaseStripAnim):
         self._led.buffer[i] = (self._led.buffer[i] + increment) % 256
 
     def randomize(self, randomizer=lambda: random.randint(0, 255)):
+        print('randomizing')
         for i in xrange(len(self._led.buffer)):
-            self._led.buffer[i] = max(0, min(255, randomizer()))
+            self._led.buffer[i] = int(max(0, min(255, randomizer())))

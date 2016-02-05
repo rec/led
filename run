@@ -2,10 +2,21 @@
 
 from __future__ import print_function
 
-import keyboard, LED, ticker
+import keyboard, LED, ticker, random
 
 led = LED.LED()
 ticker = led.ticker
+
+def basic():
+    return random.randint(0, 255)
+
+def filterer(rand, ratio):
+    def func():
+        return rand() if random.random() < ratio else 0
+    return func
+
+def expo():
+    return random.expovariate(1 / 127.0)
 
 HANDLER = {
     'q': led.exit,
@@ -16,7 +27,12 @@ HANDLER = {
     'j': lambda: ticker.increment_selected(-1),
     'k': ticker.increment_selected,
     'f': ticker.toggle_flash_selected,
-    'r': lambda: ticker.randomize,
+    'r': lambda: ticker.randomize(basic),
+    's': lambda: ticker.randomize(expo),
+    't': lambda: ticker.randomize(filterer(expo, 0.50)),
+    'u': lambda: ticker.randomize(filterer(basic, 0.50)),
+    'v': lambda: ticker.randomize(filterer(expo, 0.20)),
+    'w': lambda: ticker.randomize(filterer(basic, 0.20)),
     }
 
 def handle_keystrokes(ch):
