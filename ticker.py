@@ -12,6 +12,9 @@ class Ticker(animation.BaseStripAnim):
         self.direction = 1
         self.selected = 0
         self.flash_selected = False
+        self.flash_toggle_requested = False
+        self.flash_period = 20
+        self.selected_color = colors.Black
 
     def scroll(self, steps):
         led = self._led
