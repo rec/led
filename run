@@ -1,0 +1,17 @@
+#!/usr/bin/env python2.7
+
+import keyboard, LED, ticker
+
+led = LED.LED()
+
+def handle_keystrokes(ch):
+    if ch == 'q':
+        led.exit()
+    print(ch)
+
+thread = keyboard.threaded(handle_keystrokes)
+
+try:
+    led.run()
+except KeyboardInterrupt:
+    led.exit()

@@ -21,10 +21,10 @@ class LED(object):
         self.driver = serial_driver.DriverSerial(
             num=80, type=serial_driver.LEDTYPE.LPD8806)
         self.led_strip = led.LEDStrip(self.driver)
-        self.anim = ticker.Ticker(self.led_strip)
+        self.ticker = ticker.Ticker(self.led_strip)
 
     def run(self):
-        self.anim.run()
+        self.ticker.run()
 
     def exit(self):
         self.led_strip.all_off()
