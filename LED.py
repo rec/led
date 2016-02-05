@@ -2,7 +2,7 @@
 
 import bibliopixel
 from bibliopixel.drivers import serial_driver
-from bibliopixel.led import *
+from bibliopixel import led
 
 import ticker
 
@@ -16,18 +16,18 @@ def runner():
     driver = serial_driver.DriverSerial(num=80, type=serial_driver.LEDTYPE.LPD8806)
 
     # Load the LEDStrip class
-    led = LEDStrip(driver)
+    led_strip = led.LEDStrip(driver)
 
     # Load channel test animation
-    anim = ticker.Ticker(led)
+    anim = ticker.Ticker(led_strip)
 
     try:
         # Run the animation.
         anim.run()
     except KeyboardInterrupt:
         # Ctrl+C will exit the animation and turn the LEDs offs.
-        led.all_off()
-        led.update()
+        led_strip.all_off()
+        led_strip.update()
 
 if __name__ == '__main__':
     runner()
