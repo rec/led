@@ -10,11 +10,15 @@ ticker = led.ticker
 HANDLER = {
     'q': led.exit,
     '+': lambda: ticker.change_speed(-10),
-    ' ': ticker.toggle_pause
+    '-': lambda: ticker.change_speed(10),
+    ' ': ticker.toggle_pause,
+    '/': ticker.reverse,
+    'j': lambda: ticker.increment_selected(-1),
+    'k': ticker.increment_selected,
     }
 
 def handle_keystrokes(ch):
-    HANDLER.get(ch, lambda: print('Don\'t understand character', ch))()
+    HANDLER.get(ch, lambda: print('Don\'t understand character', ch, ord(ch)))()
 
 thread = keyboard.threaded(handle_keystrokes)
 
