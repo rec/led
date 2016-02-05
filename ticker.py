@@ -60,6 +60,11 @@ class Ticker(animation.BaseStripAnim):
 
         if self.flash_selected:
             self.selected_color = self._led.get(selected)
+            if int(self._step / self.flash_period) % 2:
+                base = 3 * selected
+                for i in xrange(3):
+                    self.buffer[base + i] = 255 - self.buffer[base + i]
+
 
     def reverse(self):
         self.direction = -self.direction
