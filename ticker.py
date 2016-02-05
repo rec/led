@@ -1,5 +1,7 @@
 from __future__ import print_function
 
+import random
+
 from bibliopixel import animation, colors
 
 class Ticker(animation.BaseStripAnim):
@@ -36,7 +38,7 @@ class Ticker(animation.BaseStripAnim):
 
     def step(self, amt=1):
         if not self._step:
-            self.setme()
+            self.randomize()
 
         if self.flash_selected:
             selected = self.selected
@@ -82,10 +84,6 @@ class Ticker(animation.BaseStripAnim):
         i = color_index + 3 * self.selected
         self._led.buffer[i] = (self._led.buffer[i] + increment) % 256
 
-    def setme(self):
-        self._led.set(0, colors.Red)
-        self._led.set(1, colors.Green)
-        self._led.set(2, colors.Green)
-        self._led.set(3, colors.Blue)
-        self._led.set(4, colors.Blue)
-        self._led.set(5, colors.Blue)
+    def randomize(self):
+        for i in xrange(len(self._led.buffer)):
+            self._led.buffer[i] = random.randint(0, 255)
