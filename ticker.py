@@ -10,9 +10,9 @@ class Ticker(animation.BaseStripAnim):
         self.direction = 1
 
     def scroll(self, steps):
-        # https://stackoverflow.com/questions/9457832/python-list-rotation
         led = self._led
         steps = steps % led.numLEDs
+        # https://stackoverflow.com/questions/9457832/python-list-rotation
         led.buffer = led.buffer[-3 * steps:] + led.buffer[:-3 * steps]
 
     def step(self, amt = 1):
@@ -33,6 +33,10 @@ class Ticker(animation.BaseStripAnim):
         self.period_in_steps *= 1.0 + increment / 100.0
         if self.period_in_steps < 1:
             self.period_in_steps = 0
+
+    def change_color(self, color_index, increment):
+        self._led.buffer[color_index] = (
+            (self._led.buffer[color_index] + increment) % 256)
 
     def setme(self):
         self._led.set(0, colors.Red)
