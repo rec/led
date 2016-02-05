@@ -6,28 +6,28 @@ from bibliopixel import led
 
 import ticker
 
-# Causes frame timing information to be output
-# bibliopixel.log.setLogLevel(bibliopixel.log.DEBUG)
+class LED(object):
+    def __init__(self):
+        self.driver = serial_driver.DriverSerial(
+            num=80, type=serial_driver.LEDTYPE.LPD8806)
+        self.led_strip = led.LEDStrip(self.driver)
+        self.anim = ticker.Ticker(self.led_strip)
 
-#Load driver for the AllPixel
+    def run(self):
+        self.anim.run()
+
+    def exit(self):
+        self.led_strip.all_off()
+        self.led_strip.update()
+
 
 def runner():
-    # Set number of pixels & LED type here
-    driver = serial_driver.DriverSerial(num=80, type=serial_driver.LEDTYPE.LPD8806)
-
-    # Load the LEDStrip class
-    led_strip = led.LEDStrip(driver)
-
-    # Load channel test animation
-    anim = ticker.Ticker(led_strip)
+    led = LED()
 
     try:
-        # Run the animation.
-        anim.run()
+        led.run()
     except KeyboardInterrupt:
-        # Ctrl+C will exit the animation and turn the LEDs offs.
-        led_strip.all_off()
-        led_strip.update()
+        led.exit()
 
 if __name__ == '__main__':
     runner()
