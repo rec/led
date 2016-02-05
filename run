@@ -16,6 +16,7 @@ HANDLER = {
     'j': lambda: ticker.increment_selected(-1),
     'k': ticker.increment_selected,
     'f': ticker.toggle_flash_selected,
+    'r': lambda: ticker.randomize,
     }
 
 def handle_keystrokes(ch):

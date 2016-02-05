@@ -65,7 +65,6 @@ class Ticker(animation.BaseStripAnim):
                 self._led.set(self.selected_index,
                               colors.Black if is_bright else colors.White)
 
-
     def reverse(self):
         self.direction = -self.direction
 
@@ -82,6 +81,6 @@ class Ticker(animation.BaseStripAnim):
         i = color_index + 3 * self.selected
         self._led.buffer[i] = (self._led.buffer[i] + increment) % 256
 
-    def randomize(self):
+    def randomize(self, randomizer=lambda: random.randint(0, 255)):
         for i in xrange(len(self._led.buffer)):
-            self._led.buffer[i] = random.randint(0, 255)
+            self._led.buffer[i] = max(0, min(255, randomizer()))
