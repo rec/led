@@ -10,6 +10,7 @@ ticker = led.ticker
 HANDLER = {
     'q': led.exit,
     '+': lambda: ticker.change_speed(-10),
+    ' ': ticker.toggle_pause
     }
 
 def handle_keystrokes(ch):

@@ -15,11 +15,16 @@ class Ticker(animation.BaseStripAnim):
         # https://stackoverflow.com/questions/9457832/python-list-rotation
         led.buffer = led.buffer[-3 * steps:] + led.buffer[:-3 * steps]
 
+    def toggle_pause(self):
+        self.running = not self.running
+
     def step(self, amt = 1):
         if not self._step:
             self.setme()
 
         self._step += 1
+        if not self.running:
+            return
         if self.period_in_steps:
             if self.last_scroll >= self.period_in_steps:
                 self.last_scroll = 0
