@@ -30,9 +30,14 @@ class Ticker(animation.BaseStripAnim):
     def change_speed(self, increment):
         if self.direction < 0:
             increment = -increment
-        self.period_in_steps *= 1.0 + increment / 100.0
-        if self.period_in_steps < 1:
-            self.period_in_steps = 0
+        if not self.period_in_steps:
+            self.direction = abs(increment) / increment
+            self.period_in_steps = 1
+        else:
+            self.period_in_steps *= 1.0 + increment / 100.0
+            if self.period_in_steps < 1:
+                self.period_in_steps = 0
+        print 'speed is now', self.period_in_steps
 
     def change_color(self, color_index, increment):
         self._led.buffer[color_index] = (
