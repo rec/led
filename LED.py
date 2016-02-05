@@ -1,5 +1,15 @@
 #!/usr/bin/env python2.7
 
+PATH = '/development/Bibliopixel'
+import sys
+
+USE_MASTER = False
+
+if USE_MASTER and PATH not in sys.path:
+    sys.path.insert(0, PATH)
+# TODO: why does the release version work and git's master crash?
+
+
 import bibliopixel
 from bibliopixel.drivers import serial_driver
 from bibliopixel import led
