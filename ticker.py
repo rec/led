@@ -17,6 +17,7 @@ class Ticker(animation.BaseStripAnim):
 
     def toggle_pause(self):
         self.running = not self.running
+        print('Running.' if self.running else 'Paused.')
 
     def step(self, amt = 1):
         if not self._step:
