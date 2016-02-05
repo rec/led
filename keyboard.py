@@ -4,7 +4,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import termios, fcntl, sys, os, threading
 
-def keyboard(callback):
+def keyboard(callback, exit='q'):
     fd = sys.stdin.fileno()
 
     oldterm = termios.tcgetattr(fd)
@@ -18,7 +18,10 @@ def keyboard(callback):
     try:
         while True:
             try:
-                callback(sys.stdin.read(1))
+                ch = sys.stdin.read(1)
+                callback(ch)
+                if ch == exit:
+                    break
             except IOError:
                 pass
     finally:
@@ -31,4 +34,4 @@ def threaded(callback, **kwds):
     return t
 
 if __name__ == '__main__':
-    threaded(lambda c: print('Keystroke ' + c))
+    threaded(lambda c: print('Keystroke', ord(c)))
