@@ -19,3 +19,8 @@ class Ticker(animation.BaseStripAnim):
         self._led.fill(self.colors[color], 7, 9)
 
         self._step += 1
+        if self._internalDelay < 100:
+            print('here!')
+            self._internalDelay = 100
+        elif self._internalDelay > 100:
+            self._internalDelay -= 11
