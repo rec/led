@@ -15,6 +15,7 @@ HANDLER = {
     '/': ticker.reverse,
     'j': lambda: ticker.increment_selected(-1),
     'k': ticker.increment_selected,
+    'f': ticker.toggle_flash_selected,
     }
 
 def handle_keystrokes(ch):
