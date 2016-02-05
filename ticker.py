@@ -12,7 +12,7 @@ class Ticker(animation.BaseStripAnim):
         self.last_scroll = 0
         self.period_in_steps = 125
         self.direction = 1
-        self.selected = 0
+        self.selected = self.selected_index = 0
         self.flash_selected = False
         self.flash_toggle_requested = False
         self.flash_period = 60
@@ -40,9 +40,8 @@ class Ticker(animation.BaseStripAnim):
         if not self._step:
             self.randomize()
 
-        selected = self.selected
         if self.flash_selected:
-            self._led.set(selected, self.selected_color)
+            self._led.set(self.selected_index, self.selected_color)
 
         if self.flash_toggle_requested:
             self.flash_toggle_requested = False
@@ -59,10 +58,11 @@ class Ticker(animation.BaseStripAnim):
                     self.last_scroll += 1
 
         if self.flash_selected:
-            self.selected_color = self._led.get(selected)
+            self.selected_index = self.selected
+            self.selected_color = self._led.get(self.selected_index)
             if int(self._step / self.flash_period) % 2:
                 is_bright = sum(self.selected_color) / (3 * 255.0) > 0.5
-                self._led.set(selected,
+                self._led.set(self.selected_index,
                               colors.Black if is_bright else colors.White)
 
 
