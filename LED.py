@@ -1,43 +1,36 @@
 #!/usr/bin/env python2.7
 
-PATH = '/development/Bibliopixel'
-import sys
+import random
 
-USE_MASTER = False
+from bibliopixel.drivers.serial_driver import DriverSerial, LEDTYPE
+import bibliopixel.animation
+import bibliopixel.led
 
-if USE_MASTER and PATH not in sys.path:
-    sys.path.insert(0, PATH)
-# TODO: why does the release version work and git's master crash?
+import scroller
 
+class LED(bibliopixel.animation.BaseStripAnim):
+    def __init__(self, internal_delay=4, number=80):
+        driver = DriverSerial(num=number, type=LEDTYPE.LPD8806)
+        self.led = bibliopixel.led.LEDStrip(driver)
+        super(LED, self).__init__(self.led)
+        self.led._internalDelay = internal_delay
+        self.scroller = scroller.Scroller(internal_delay)
 
-import bibliopixel
-from bibliopixel.drivers import serial_driver
-from bibliopixel import led
+    def step(self, amt=1):
+        if not self._step:
+            self.randomize()
 
-import ticker
+        self._step += 1
+        self.scroller.step(self._led)
 
-class LED(object):
-    def __init__(self):
-        self.driver = serial_driver.DriverSerial(
-            num=80, type=serial_driver.LEDTYPE.LPD8806)
-        self.led_strip = led.LEDStrip(self.driver)
-        self.ticker = ticker.Ticker(self.led_strip)
+    def scroll(self, steps):
+        self.scroller.scroll(self.led, steps)
 
-    def run(self):
-        self.ticker.run()
+    def randomize(self, randomizer=lambda: random.randint(0, 255)):
+        print('randomizing')
+        for i in xrange(len(self.led.buffer)):
+            self.led.buffer[i] = int(max(0, min(255, randomizer())))
 
     def exit(self):
-        self.led_strip.all_off()
-        self.led_strip.update()
-
-
-def runner():
-    led = LED()
-
-    try:
-        led.run()
-    except KeyboardInterrupt:
-        led.exit()
-
-if __name__ == '__main__':
-    runner()
+        self.led.all_off()
+        self.led.update()

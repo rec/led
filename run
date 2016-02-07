@@ -2,11 +2,9 @@
 
 from __future__ import print_function
 
-import keyboard, LED, ticker, random
+import keyboard, LED, random
 
 led = LED.LED()
-ticker = led.ticker
-scroller = ticker.scroller
 
 def basic():
     return random.randint(0, 255)
@@ -19,22 +17,26 @@ def filterer(rand, ratio):
 def expo():
     return random.expovariate(1 / 127.0)
 
+def rotate():
+    led.led_strip.rotation += 1
+
 HANDLER = {
     'q': led.exit,
-    '+': lambda: scroller.change_speed(-10),
-    '=': lambda: scroller.change_speed(-10),
-    '-': lambda: scroller.change_speed(10),
-    '_': lambda: scroller.change_speed(10),
-    ' ': scroller.pause,
-    '/': scroller.reverse,
-    'r': lambda: ticker.randomize(basic),
-    's': lambda: ticker.randomize(expo),
-    't': lambda: ticker.randomize(filterer(expo, 0.50)),
-    'u': lambda: ticker.randomize(filterer(basic, 0.50)),
-    'v': lambda: ticker.randomize(filterer(expo, 0.20)),
-    'w': lambda: ticker.randomize(filterer(basic, 0.20)),
-    'x': lambda: ticker.randomize(filterer(expo, 0.08)),
-    'y': lambda: ticker.randomize(filterer(basic, 0.12)),
+    '+': lambda: led.scroller.change_speed(-10),
+    '=': lambda: led.scroller.change_speed(-10),
+    '-': lambda: led.scroller.change_speed(10),
+    '_': lambda: led.scroller.change_speed(10),
+    ' ': led.scroller.pause,
+    '/': led.scroller.reverse,
+    'r': lambda: led.randomize(basic),
+    's': lambda: led.randomize(expo),
+    't': lambda: led.randomize(filterer(expo, 0.50)),
+    'u': lambda: led.randomize(filterer(basic, 0.50)),
+    'v': lambda: led.randomize(filterer(expo, 0.20)),
+    'w': lambda: led.randomize(filterer(basic, 0.20)),
+    'x': lambda: led.randomize(filterer(expo, 0.08)),
+    'y': lambda: led.randomize(filterer(basic, 0.12)),
+    'z': rotate,
     }
 
 def handle_keystrokes(ch):
