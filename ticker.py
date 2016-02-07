@@ -12,7 +12,6 @@ class Ticker(animation.BaseStripAnim):
         self.last_scroll = 0
         self.period_in_steps = 125
         self.direction = 1
-        self.selected_color = colors.Black
 
     def scroll(self, steps):
         led = self._led
@@ -48,10 +47,6 @@ class Ticker(animation.BaseStripAnim):
         print('speed is now',
               (1000 / self._internalDelay) / self.period_in_steps,
               'LEDs per second')
-
-    def change_color(self, color_index, increment):
-        i = color_index + 3 * self.selected
-        self._led.buffer[i] = (self._led.buffer[i] + increment) % 256
 
     def randomize(self, randomizer=lambda: random.randint(0, 255)):
         print('randomizing')
