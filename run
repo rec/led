@@ -24,7 +24,7 @@ HANDLER = {
     '=': lambda: ticker.change_speed(-10),
     '-': lambda: ticker.change_speed(10),
     '_': lambda: ticker.change_speed(10),
-    ' ': ticker.toggle_pause,
+    ' ': ticker.pause,
     '/': ticker.reverse,
     'r': lambda: ticker.randomize(basic),
     's': lambda: ticker.randomize(expo),

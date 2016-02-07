@@ -8,7 +8,7 @@ class Ticker(animation.BaseStripAnim):
     def __init__(self, led):
         super(Ticker, self).__init__(led)
         self._internalDelay = 4
-        self.running = True
+        self.paused = True
         self.last_scroll = 0
         self.period_in_steps = 125
         self.direction = 1
@@ -20,20 +20,16 @@ class Ticker(animation.BaseStripAnim):
         # https://stackoverflow.com/questions/9457832/python-list-rotation
         led.buffer = led.buffer[-3 * steps:] + led.buffer[:-3 * steps]
 
-    def toggle_flash_selected(self):
-        # For safety, defer toggling the flash until the "main update thread".
-        self.flash_toggle_requested = True
-
-    def toggle_pause(self):
-        self.running = not self.running
-        print('Running.' if self.running else 'Paused.')
+    def pause(self):
+        self.paused = not self.paused
+        print('paused.' if self.paused else 'running.')
 
     def step(self, amt=1):
         if not self._step:
             self.randomize()
 
         self._step += 1
-        if self.running:
+        if not self.paused:
             if self.period_in_steps:
                 if self.last_scroll >= self.period_in_steps:
                     self.last_scroll = 0
