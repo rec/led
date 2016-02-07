@@ -21,7 +21,9 @@ def expo():
 HANDLER = {
     'q': led.exit,
     '+': lambda: ticker.change_speed(-10),
+    '=': lambda: ticker.change_speed(-10),
     '-': lambda: ticker.change_speed(10),
+    '_': lambda: ticker.change_speed(10),
     ' ': ticker.toggle_pause,
     '/': ticker.reverse,
     'j': lambda: ticker.increment_selected(-1),
@@ -33,6 +35,8 @@ HANDLER = {
     'u': lambda: ticker.randomize(filterer(basic, 0.50)),
     'v': lambda: ticker.randomize(filterer(expo, 0.20)),
     'w': lambda: ticker.randomize(filterer(basic, 0.20)),
+    'x': lambda: ticker.randomize(filterer(expo, 0.08)),
+    'y': lambda: ticker.randomize(filterer(basic, 0.12)),
     }
 
 def handle_keystrokes(ch):
