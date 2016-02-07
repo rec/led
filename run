@@ -6,6 +6,7 @@ import keyboard, LED, ticker, random
 
 led = LED.LED()
 ticker = led.ticker
+scroller = ticker.scroller
 
 def basic():
     return random.randint(0, 255)
@@ -20,12 +21,12 @@ def expo():
 
 HANDLER = {
     'q': led.exit,
-    '+': lambda: ticker.change_speed(-10),
-    '=': lambda: ticker.change_speed(-10),
-    '-': lambda: ticker.change_speed(10),
-    '_': lambda: ticker.change_speed(10),
-    ' ': ticker.pause,
-    '/': ticker.reverse,
+    '+': lambda: scroller.change_speed(-10),
+    '=': lambda: scroller.change_speed(-10),
+    '-': lambda: scroller.change_speed(10),
+    '_': lambda: scroller.change_speed(10),
+    ' ': scroller.pause,
+    '/': scroller.reverse,
     'r': lambda: ticker.randomize(basic),
     's': lambda: ticker.randomize(expo),
     't': lambda: ticker.randomize(filterer(expo, 0.50)),
