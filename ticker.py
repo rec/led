@@ -12,10 +12,6 @@ class Ticker(animation.BaseStripAnim):
         self.last_scroll = 0
         self.period_in_steps = 125
         self.direction = 1
-        self.selected = self.selected_index = 0
-        self.flash_selected = False
-        self.flash_toggle_requested = False
-        self.flash_period = 60
         self.selected_color = colors.Black
 
     def scroll(self, steps):
@@ -32,21 +28,9 @@ class Ticker(animation.BaseStripAnim):
         self.running = not self.running
         print('Running.' if self.running else 'Paused.')
 
-    def increment_selected(self, increment=1):
-        self.selected = (self.selected + increment) % self._led.numLEDs
-        print('Selected is now', self.selected)
-
     def step(self, amt=1):
         if not self._step:
             self.randomize()
-
-        if self.flash_selected:
-            self._led.set(self.selected_index, self.selected_color)
-
-        if self.flash_toggle_requested:
-            self.flash_toggle_requested = False
-            self.flash_selected = not self.flash_selected
-            print('Flashing.' if self.flash_selected else 'Not flashing.')
 
         self._step += 1
         if self.running:
@@ -56,14 +40,6 @@ class Ticker(animation.BaseStripAnim):
                     self.scroll(self.direction)
                 else:
                     self.last_scroll += 1
-
-        if self.flash_selected:
-            self.selected_index = self.selected
-            self.selected_color = self._led.get(self.selected_index)
-            if int(self._step / self.flash_period) % 2:
-                is_bright = sum(self.selected_color) / (3 * 255.0) > 0.5
-                self._led.set(self.selected_index,
-                              colors.Black if is_bright else colors.White)
 
     def reverse(self):
         self.direction = -self.direction
