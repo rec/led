@@ -21,7 +21,7 @@ class LED(bibliopixel.animation.BaseStripAnim):
             self.randomize()
 
         self._step += 1
-        self.scroller.step(self.led._internalDelay)
+        self.scroller.step()
 
     def scroll(self, steps):
         self.scroller.scroll(steps)
