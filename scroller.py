@@ -6,12 +6,12 @@ from bibliopixel import animation, colors
 
 class Scroller(object):
     """Represents the state of a scrolling strip of LEDs."""
-    def __init__(self, internal_delay):
+    def __init__(self, frequency=0.5):
         self.paused = True
         self.last_scroll = 0
         self.period_in_steps = 125
-        self.direction = 1
-        self.internal_delay = internal_delay
+        self.frequency = frequency
+        self.delta = 1
 
     def scroll(self, led, steps):
         steps = steps % (len(led.buffer) / 3);
@@ -27,12 +27,12 @@ class Scroller(object):
             if self.period_in_steps:
                 if self.last_scroll >= self.period_in_steps:
                     self.last_scroll = 0
-                    self.scroll(led, self.direction)
+                    self.scroll(led, self.delta)
                 else:
                     self.last_scroll += 1
 
     def reverse(self):
-        self.direction = -self.direction
+        self.delta = -self.delta
 
     def change_speed(self, increment):
         self.period_in_steps *= 1.0 + increment / 100.0
