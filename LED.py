@@ -14,17 +14,17 @@ class LED(bibliopixel.animation.BaseStripAnim):
         self.led = bibliopixel.led.LEDStrip(driver)
         super(LED, self).__init__(self.led)
         self.led._internalDelay = internal_delay
-        self.scroller = scroller.Scroller(internal_delay)
+        self.scroller = scroller.Scroller(self.led)
 
     def step(self, amt=1):
         if not self._step:
             self.randomize()
 
         self._step += 1
-        self.scroller.step(self._led)
+        self.scroller.step(self.led._internalDelay)
 
     def scroll(self, steps):
-        self.scroller.scroll(self.led, steps)
+        self.scroller.scroll(steps)
 
     def randomize(self, randomizer=lambda: random.randint(0, 255)):
         print('randomizing')
