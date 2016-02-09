@@ -1,6 +1,6 @@
 from __future__ import print_function
 
-import random
+import json, random
 from copy import deepcopy
 
 from bibliopixel.drivers.serial_driver import DriverSerial, LEDTYPE
@@ -8,6 +8,8 @@ import bibliopixel.animation
 import bibliopixel.led
 
 import Scroller
+
+PRESET_FILE = '.presets'
 
 class LED(bibliopixel.animation.BaseStripAnim):
     def __init__(self, internal_delay=4, number=80):
@@ -18,7 +20,11 @@ class LED(bibliopixel.animation.BaseStripAnim):
         self.led._internalDelay = internal_delay
         self.scroller = Scroller.Scroller()
         self.blacked_out = False
-        self.presets = 10 * [None]
+
+        try:
+            self.presets = json.load(open(PRESET_FILE))
+        except:
+            self.presets = 10 * [{}]
 
     def step(self, amt=1):
         self._step += 1
@@ -45,14 +51,16 @@ class LED(bibliopixel.animation.BaseStripAnim):
         self.clear_blackout()
         preset = self.presets[i]
         if preset:
-            self.scroller, self.led.buffer = preset
+            scroller, self.led.buffer = preset
+            self.scroller = Scroller.Scroller(**scroller)
             print('Loaded preset', i)
         else:
             print('No preset stored at', i)
 
     def set_preset(self, i):
         self.clear_blackout()
-        self.presets[i] = deepcopy(self.scroller), deepcopy(self.led.buffer)
+        self.presets[i] = self.scroller.serialize(), deepcopy(self.led.buffer)
+        json.dump(self.presets, open(PRESET_FILE, 'w'))
         print('Stored preset at', i)
 
     def clear(self):

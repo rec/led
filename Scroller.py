@@ -1,17 +1,18 @@
 from __future__ import print_function
 
-import random, time
+import random, time, Saveable
 
 from bibliopixel import animation, colors
 
-class Scroller(object):
+class Scroller(Saveable.Saveable):
+    _IGNORE = ('last_time', )
+
     """Represents the state of a scrolling strip of LEDs."""
-    def __init__(self, frequency=2.0):
-        self.paused = False
-        self.last_scroll = 0
+    def __init__(self, paused=False, frequency=2.0, accumulator=0.0, delta=1):
+        self.paused = paused
         self.frequency = frequency
-        self.accumulator = 0.0
-        self.delta = 1
+        self.accumulator = accumulator
+        self.delta = delta
         self.last_time = time.time()
 
     def scroll(self, led, steps):
