@@ -17,9 +17,6 @@ def filterer(rand, ratio):
 def expo():
     return random.expovariate(1 / 127.0)
 
-def rotate():
-    led.led_strip.rotation += 1
-
 HANDLER = {
     'q': led.exit,
     '+': lambda: led.scroller.change_speed(-10),
@@ -28,6 +25,8 @@ HANDLER = {
     '_': lambda: led.scroller.change_speed(10),
     ' ': led.scroller.pause,
     '/': led.scroller.reverse,
+    'b': led.blackout,
+    'c': led.clear,
     'r': lambda: led.randomize(basic),
     's': lambda: led.randomize(expo),
     't': lambda: led.randomize(filterer(expo, 0.50)),
@@ -36,7 +35,6 @@ HANDLER = {
     'w': lambda: led.randomize(filterer(basic, 0.20)),
     'x': lambda: led.randomize(filterer(expo, 0.08)),
     'y': lambda: led.randomize(filterer(basic, 0.12)),
-    'z': rotate,
     }
 
 def handle_keystrokes(ch):
