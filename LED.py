@@ -25,8 +25,11 @@ class LED(bibliopixel.animation.BaseStripAnim):
         self._step += 1
         self.scroller.step()
 
-    def randomize(self, randomizer=lambda: random.randint(0, 255)):
+    def clear_blackout(self):
         self.blacked_out and self.blackout()
+
+    def randomize(self, randomizer=lambda: random.randint(0, 255)):
+        self.clear_blackout()
         print('randomizing')
         for i in xrange(3 * self.number):
             self.led.buffer[i] = int(max(0, min(255, randomizer())))
@@ -40,7 +43,7 @@ class LED(bibliopixel.animation.BaseStripAnim):
         self.blacked_out = not self.blacked_out
 
     def clear(self):
-        self.blacked_out and self.blackout()
+        self.clear_blackout()
         self.led.buffer = 3 * self.number * [0]
 
     def exit(self):
