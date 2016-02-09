@@ -6,7 +6,7 @@ from bibliopixel.drivers.serial_driver import DriverSerial, LEDTYPE
 import bibliopixel.animation
 import bibliopixel.led
 
-import scroller
+import Scroller
 
 class LED(bibliopixel.animation.BaseStripAnim):
     def __init__(self, internal_delay=4, number=80):
@@ -15,7 +15,7 @@ class LED(bibliopixel.animation.BaseStripAnim):
         self.led = bibliopixel.led.LEDStrip(driver)
         super(LED, self).__init__(self.led)
         self.led._internalDelay = internal_delay
-        self.scroller = scroller.Scroller(self.led)
+        self.scroller = Scroller.Scroller(self.led)
         self.blacked_out = False
 
     def step(self, amt=1):
