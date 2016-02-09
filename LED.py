@@ -25,9 +25,6 @@ class LED(bibliopixel.animation.BaseStripAnim):
         self._step += 1
         self.scroller.step()
 
-    def scroll(self, steps):
-        self.scroller.scroll(steps)
-
     def randomize(self, randomizer=lambda: random.randint(0, 255)):
         self.blacked_out and self.blackout()
         print('randomizing')

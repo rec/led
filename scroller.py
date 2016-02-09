@@ -10,7 +10,6 @@ class Scroller(object):
         self.led = led
         self.paused = False
         self.last_scroll = 0
-        self.period_in_steps = 125
         self.frequency = frequency
         self.accumulator = 0.0
         self.delta = 1
@@ -45,11 +44,5 @@ class Scroller(object):
 
     def change_speed(self, increment):
         ratio = 1.0 + increment / 100.0
-        self.period_in_steps *= ratio
         self.frequency /= ratio
-        if self.period_in_steps < 1:
-            self.period_in_steps = 1
-
-        print('speed is now',
-              (1000 / self.led._internalDelay) / self.period_in_steps,
-              'LEDs per second or', self.frequency)
+        print('Speed is now {:03.3f}Hz'.format(self.frequency))
