@@ -1,6 +1,7 @@
-#!/usr/bin/env python2.7
+from __future__ import print_function
 
 import random
+from copy import deepcopy
 
 from bibliopixel.drivers.serial_driver import DriverSerial, LEDTYPE
 import bibliopixel.animation
@@ -15,15 +16,13 @@ class LED(bibliopixel.animation.BaseStripAnim):
         self.led = bibliopixel.led.LEDStrip(driver)
         super(LED, self).__init__(self.led)
         self.led._internalDelay = internal_delay
-        self.scroller = Scroller.Scroller(self.led)
+        self.scroller = Scroller.Scroller()
         self.blacked_out = False
+        self.presets = 10 * [None]
 
     def step(self, amt=1):
-        if not self._step:
-            self.randomize()
-
         self._step += 1
-        self.scroller.step()
+        self.scroller.step(self.led)
 
     def clear_blackout(self):
         self.blacked_out and self.blackout()
@@ -41,6 +40,20 @@ class LED(bibliopixel.animation.BaseStripAnim):
         else:
             self.led.buffer = self.saved
         self.blacked_out = not self.blacked_out
+
+    def preset(self, i):
+        self.clear_blackout()
+        preset = self.presets[i]
+        if preset:
+            self.scroller, self.led.buffer = preset
+            print('Loaded preset', i)
+        else:
+            print('No preset stored at', i)
+
+    def set_preset(self, i):
+        self.clear_blackout()
+        self.presets[i] = deepcopy(self.scroller), deepcopy(self.led.buffer)
+        print('Stored preset at', i)
 
     def clear(self):
         self.clear_blackout()

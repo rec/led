@@ -28,8 +28,10 @@ def handler(led):
     def presets(i):
         return lambda: led.preset(i), lambda: led.set_preset(i)
 
-    for i in xrange(0):  # 10, really
-        table[i + '0'], table[i + ')'] = presets(i)
+    digits = '0123456789'
+    shifts = ')!@#$%^&*('
+    for i in xrange(10):
+        table[digits[i]], table[shifts[i]] = presets(i)
 
     def error(c):
         print('Don\'t understand character', c, ord(c))

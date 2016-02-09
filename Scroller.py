@@ -6,8 +6,7 @@ from bibliopixel import animation, colors
 
 class Scroller(object):
     """Represents the state of a scrolling strip of LEDs."""
-    def __init__(self, led, frequency=2.0):
-        self.led = led
+    def __init__(self, frequency=2.0):
         self.paused = False
         self.last_scroll = 0
         self.frequency = frequency
@@ -15,10 +14,10 @@ class Scroller(object):
         self.delta = 1
         self.last_time = time.time()
 
-    def scroll(self, steps):
-        buf = self.led.buffer
+    def scroll(self, led, steps):
+        buf = led.buffer
         steps = (self.delta * steps) % (len(buf) / 3);
-        self.led.buffer = buf[-3 * steps:] + buf[:-3 * steps]
+        led.buffer = buf[-3 * steps:] + buf[:-3 * steps]
         # From https://stackoverflow.com/questions/9457832
 
     def pause(self):
@@ -27,7 +26,7 @@ class Scroller(object):
         if not self.paused:
             self.last_time = time.time()
 
-    def step(self):
+    def step(self, led):
         if not self.paused:
             t = time.time()
             self.accumulator += (t - self.last_time) * self.frequency
@@ -35,7 +34,7 @@ class Scroller(object):
 
             if self.accumulator >= 1.0:
                 steps = int(self.accumulator)
-                self.scroll(steps)
+                self.scroll(led, steps)
                 self.accumulator -= steps
 
 
