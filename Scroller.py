@@ -38,9 +38,9 @@ class Scroller(Saveable.Saveable):
                 self.scroll(led, steps)
                 self.accumulator -= steps
 
-
     def reverse(self):
         self.delta = -self.delta
+        print('forward' if self.delta > 0 else 'reverse')
 
     def change_speed(self, increment):
         ratio = 1.0 + increment / 100.0

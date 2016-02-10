@@ -1,13 +1,11 @@
 from __future__ import print_function
 
-import json, random, Handler
+import json, random, FlipFlop, Handler, Scroller
 from copy import deepcopy
 
 from bibliopixel.drivers.serial_driver import DriverSerial, LEDTYPE
 import bibliopixel.animation
 import bibliopixel.led
-
-import Scroller
 
 PRESET_FILE = '.presets'
 
@@ -18,9 +16,8 @@ class LED(bibliopixel.animation.BaseStripAnim):
         super(LED, self).__init__(self.led)
         self.led._internalDelay = internal_delay
         self.scroller = Scroller.Scroller()
-        self.blacked_out = False
+        self.blacked_out = FlipFlop.FlipFlop('blackout')
         self.handler = Handler.handler(self)
-
         try:
             self.presets = json.load(open(PRESET_FILE))
         except:
@@ -37,7 +34,6 @@ class LED(bibliopixel.animation.BaseStripAnim):
         else:
             print('Don\'t understand character', c, ord(c))
 
-
     def clear_blackout(self):
         self.blacked_out and self.blackout()
 
@@ -53,7 +49,7 @@ class LED(bibliopixel.animation.BaseStripAnim):
             self.clear()
         else:
             self.led.buffer = self.saved
-        self.blacked_out = not self.blacked_out
+        self.blacked_out.change()
 
     def preset(self, i):
         self.clear_blackout()
