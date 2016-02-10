@@ -15,6 +15,8 @@ def handler(led):
         '/': led.scroller.reverse,
         'b': led.blackout,
         'c': led.clear,
+        'l': led.looper.play,
+        'L': led.looper.record,
         'r': lambda: led.randomize(basic),
         's': lambda: led.randomize(expo),
         't': lambda: led.randomize(filterer(expo, 0.50)),

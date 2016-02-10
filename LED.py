@@ -17,8 +17,8 @@ class LED(bibliopixel.animation.BaseStripAnim):
         self.led._internalDelay = internal_delay
         self.scroller = Scroller.Scroller()
         self.blacked_out = FlipFlop.FlipFlop('blackout')
-        self.handler = Handler.handler(self)
         self.looper = Looper.Looper()
+        self.handler = Handler.handler(self)
         try:
             fp = open(PRESET_FILE)
         except:
@@ -28,12 +28,14 @@ class LED(bibliopixel.animation.BaseStripAnim):
 
     def step(self, amt=1):
         self._step += 1
+        self.looper.step(self.keyboard)
         self.scroller.step(self.led)
 
     def keyboard(self, c):
         command = self.handler.get(c)
         if command:
             command()
+            self.looper.event(c)
         else:
             print('Don\'t understand character', c, ord(c))
 
