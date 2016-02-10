@@ -13,7 +13,6 @@ PRESET_FILE = '.presets'
 
 class LED(bibliopixel.animation.BaseStripAnim):
     def __init__(self, internal_delay=4, number=80):
-        self.number = number
         driver = DriverSerial(num=number, type=LEDTYPE.LPD8806)
         self.led = bibliopixel.led.LEDStrip(driver)
         super(LED, self).__init__(self.led)
@@ -36,7 +35,7 @@ class LED(bibliopixel.animation.BaseStripAnim):
     def randomize(self, randomizer=lambda: random.randint(0, 255)):
         self.clear_blackout()
         print('randomizing')
-        for i in xrange(3 * self.number):
+        for i in xrange(len(self.led.buffer)):
             self.led.buffer[i] = int(max(0, min(255, randomizer())))
 
     def blackout(self):
@@ -65,7 +64,7 @@ class LED(bibliopixel.animation.BaseStripAnim):
 
     def clear(self):
         self.clear_blackout()
-        self.led.buffer = 3 * self.number * [0]
+        self.led.buffer = len(self.led.buffer) * [0]
 
     def exit(self):
         self.led.all_off()
