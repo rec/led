@@ -1,6 +1,6 @@
 from __future__ import print_function
 
-import json, random, FlipFlop, Handler, Scroller
+import json, random, FlipFlop, Handler, Looper, Scroller
 from copy import deepcopy
 
 from bibliopixel.drivers.serial_driver import DriverSerial, LEDTYPE
