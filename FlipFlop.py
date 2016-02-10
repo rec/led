@@ -16,3 +16,6 @@ class FlipFlop(object):
 
     def __nonzero__(self):
         return self.state
+
+    def serialize(self):
+        return self.state

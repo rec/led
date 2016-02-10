@@ -1,3 +1,5 @@
+import json
+
 class Saveable(object):
     _BASE_IGNORE = ('serialize', 'deserialize')
     _IGNORE = ()
@@ -7,3 +9,10 @@ class Saveable(object):
 
     def serialize(self):
         return {k: v for (k, v) in self.__dict__.items() if not self._ignore(k)}
+
+    @staticmethod
+    def default(c):
+        attr = getattr(c, 'serialize', None)
+        if not attr:
+            raise TypeError(repr(c) + ' is not JSON serializable')
+        return attr()
