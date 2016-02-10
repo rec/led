@@ -18,10 +18,13 @@ class LED(bibliopixel.animation.BaseStripAnim):
         self.scroller = Scroller.Scroller()
         self.blacked_out = FlipFlop.FlipFlop('blackout')
         self.handler = Handler.handler(self)
+        self.looper = Looper.Looper()
         try:
-            self.presets = json.load(open(PRESET_FILE))
+            fp = open(PRESET_FILE)
         except:
-            self.presets = 10 * [{}]
+            self.presets = 10 * [None]
+        else:
+            self.presets = json.load(fp)
 
     def step(self, amt=1):
         self._step += 1
@@ -55,15 +58,19 @@ class LED(bibliopixel.animation.BaseStripAnim):
         self.clear_blackout()
         preset = self.presets[i]
         if preset:
-            scroller, self.led.buffer = preset
+            scroller, self.led.buffer, looper = preset
             self.scroller = Scroller.Scroller(**scroller)
+            self.looper = Looper.Looper(**looper)
             print('Loaded preset', i)
         else:
             print('No preset stored at', i)
 
     def set_preset(self, i):
         self.clear_blackout()
-        self.presets[i] = self.scroller.serialize(), deepcopy(self.led.buffer)
+        self.presets[i] = (
+            self.scroller.serialize(),
+            deepcopy(self.led.buffer),
+            self.looper.serialize())
         json.dump(self.presets, open(PRESET_FILE, 'w'))
         print('Stored preset at', i)
 
