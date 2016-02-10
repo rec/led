@@ -33,7 +33,4 @@ def handler(led):
     for i in xrange(10):
         table[digits[i]], table[shifts[i]] = presets(i)
 
-    def error(c):
-        print('Don\'t understand character', c, ord(c))
-
-    return lambda c: table.get(c, lambda: error(c))()
+    return table

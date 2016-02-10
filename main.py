@@ -6,7 +6,7 @@ import keyboard, serial, LED
 
 led = LED.LED()
 
-thread = keyboard.threaded(led.handler)
+thread = keyboard.threaded(led.keyboard)
 
 try:
     led.run()

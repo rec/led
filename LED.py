@@ -30,6 +30,14 @@ class LED(bibliopixel.animation.BaseStripAnim):
         self._step += 1
         self.scroller.step(self.led)
 
+    def keyboard(self, c):
+        command = self.handler.get(c)
+        if command:
+            command()
+        else:
+            print('Don\'t understand character', c, ord(c))
+
+
     def clear_blackout(self):
         self.blacked_out and self.blackout()
 
