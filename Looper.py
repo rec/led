@@ -6,10 +6,12 @@ class Looper(Saveable.Saveable):
     """Represents the state of a loop of events."""
     _IGNORE = ('loop_start', 'loop_index', )
 
-    RECORD, PAUSE, PLAY = xrange(3)
+    RECORD, PAUSE, PLAY = 'record', 'pause', 'play'
 
     def __init__(self, state=PAUSE, events=None, loop_length=0):
-        self.state = state or Looper.PAUSE
+        self.state = state
+        if state == Looper.RECORD:
+            self.state = Looper.PAUSE
         self.events = events or []
         self.loop_length = loop_length
         self.loop_start = 0
@@ -38,6 +40,7 @@ class Looper(Saveable.Saveable):
             if self.state == Looper.RECORD:
                 self.events = []
             self.loop_start = t
+            print('Entering state', self.state)
 
     def record(self):
         """Toggle record."""
@@ -46,11 +49,11 @@ class Looper(Saveable.Saveable):
 
     def play(self):
         self.set_state(Looper.PLAY if self.state == Looper.PAUSE
-                       else Looper.PLAY)
+                       else Looper.PAUSE)
 
     def step(self, callback):
         def emit(dt):
-            while self.loop_index < len(self.loop):
+            while self.loop_index < len(self.events):
                 etime, key = self.events[self.loop_index]
                 if etime > dt:
                     break

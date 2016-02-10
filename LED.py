@@ -10,6 +10,8 @@ import bibliopixel.led
 PRESET_FILE = '.presets'
 
 class LED(bibliopixel.animation.BaseStripAnim):
+    DONT_RECORD = 'lL0123456789)!@#$%^&*('
+
     def __init__(self, internal_delay=4, number=80):
         driver = DriverSerial(num=number, type=LEDTYPE.LPD8806)
         self.led = bibliopixel.led.LEDStrip(driver)
@@ -25,6 +27,8 @@ class LED(bibliopixel.animation.BaseStripAnim):
             self.presets = 10 * [None]
         else:
             self.presets = json.load(fp)
+            while len(self.presets) < 10:
+                self.presets.append(None)
 
     def step(self, amt=1):
         self._step += 1
@@ -35,7 +39,8 @@ class LED(bibliopixel.animation.BaseStripAnim):
         command = self.handler.get(c)
         if command:
             command()
-            self.looper.event(c)
+            if c not in self.DONT_RECORD:
+                self.looper.event(c)
         else:
             print('Don\'t understand character', c, ord(c))
 
