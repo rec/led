@@ -1,6 +1,6 @@
 from __future__ import print_function
 
-import json, random
+import json, random, Handler
 from copy import deepcopy
 
 from bibliopixel.drivers.serial_driver import DriverSerial, LEDTYPE
@@ -19,6 +19,7 @@ class LED(bibliopixel.animation.BaseStripAnim):
         self.led._internalDelay = internal_delay
         self.scroller = Scroller.Scroller()
         self.blacked_out = False
+        self.handler = Handler.handler(self)
 
         try:
             self.presets = json.load(open(PRESET_FILE))

@@ -2,11 +2,11 @@
 
 from __future__ import print_function
 
-import keyboard, serial, LED, Handler
+import keyboard, serial, LED
 
 led = LED.LED()
 
-thread = keyboard.threaded(Handler.handler(led))
+thread = keyboard.threaded(led.handler)
 
 try:
     led.run()
