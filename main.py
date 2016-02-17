@@ -2,9 +2,9 @@
 
 from __future__ import print_function
 
-import keyboard, serial, LED
+import keyboard, serial, Player
 
-led = LED.LED()
+led = Player.Player()
 
 thread = keyboard.threaded(led.keyboard)
 

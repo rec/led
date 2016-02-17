@@ -1,18 +1,18 @@
 from __future__ import print_function
 
-import json, random, FlipFlop, Handler, Looper, Presets, Scroller
+import copy, json, random, FlipFlop, Handler, Looper, Presets, Scroller
 
 from bibliopixel.drivers.serial_driver import DriverSerial, LEDTYPE
 import bibliopixel.animation
 import bibliopixel.led
 
-class LED(bibliopixel.animation.BaseStripAnim):
+class Player(bibliopixel.animation.BaseStripAnim):
     DONT_RECORD = 'lL0123456789)!@#$%^&*('
 
     def __init__(self, internal_delay=4, number=80):
         driver = DriverSerial(num=number, type=LEDTYPE.LPD8806)
         self.led = bibliopixel.led.LEDStrip(driver)
-        super(LED, self).__init__(self.led)
+        super(Player, self).__init__(self.led)
         self.led._internalDelay = internal_delay
         self.scroller = Scroller.Scroller()
         self.blacked_out = FlipFlop.FlipFlop('blackout')
@@ -61,12 +61,12 @@ class LED(bibliopixel.animation.BaseStripAnim):
 
     def serialize(self):
         return (self.scroller.serialize(),
-                deepcopy(self.led.buffer),
+                copy.deepcopy(self.led.buffer),
                 self.looper.serialize())
 
     def set_preset(self, i):
         self.clear_blackout()
-        self.preset.set_preset(i, self.serialize())
+        self.presets.set_preset(i, self.serialize())
 
     def clear(self):
         self.clear_blackout()

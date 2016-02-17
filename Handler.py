@@ -4,6 +4,16 @@ from __future__ import print_function
 
 from Random import filterer, expo, basic
 
+class Handler(object):
+    def __init__(self, desc, function, *args, **kwds):
+        self.desc = desc
+        self.function = function
+        self.args = args
+        self.kwds = kwds
+
+    def __call__(self):
+        return self.function(*args, **kwds)
+
 def handler(led):
     table = {
         'q': led.exit,
