@@ -1,13 +1,10 @@
 from __future__ import print_function
 
-import json, random, FlipFlop, Handler, Looper, Scroller
-from copy import deepcopy
+import json, random, FlipFlop, Handler, Looper, Presets, Scroller
 
 from bibliopixel.drivers.serial_driver import DriverSerial, LEDTYPE
 import bibliopixel.animation
 import bibliopixel.led
-
-PRESET_FILE = '.presets'
 
 class LED(bibliopixel.animation.BaseStripAnim):
     DONT_RECORD = 'lL0123456789)!@#$%^&*('
@@ -21,14 +18,7 @@ class LED(bibliopixel.animation.BaseStripAnim):
         self.blacked_out = FlipFlop.FlipFlop('blackout')
         self.looper = Looper.Looper()
         self.handler = Handler.handler(self)
-        try:
-            fp = open(PRESET_FILE)
-        except:
-            self.presets = 10 * [None]
-        else:
-            self.presets = json.load(fp)
-            while len(self.presets) < 10:
-                self.presets.append(None)
+        self.presets = Presets.Presets()
 
     def step(self, amt=1):
         self._step += 1
@@ -63,23 +53,20 @@ class LED(bibliopixel.animation.BaseStripAnim):
 
     def preset(self, i):
         self.clear_blackout()
-        preset = self.presets[i]
+        preset = self.presets.preset(i)
         if preset:
             scroller, self.led.buffer, looper = preset
             self.scroller = Scroller.Scroller(**scroller)
             self.looper = Looper.Looper(**looper)
-            print('Loaded preset', i)
-        else:
-            print('No preset stored at', i)
+
+    def serialize(self):
+        return (self.scroller.serialize(),
+                deepcopy(self.led.buffer),
+                self.looper.serialize())
 
     def set_preset(self, i):
         self.clear_blackout()
-        self.presets[i] = (
-            self.scroller.serialize(),
-            deepcopy(self.led.buffer),
-            self.looper.serialize())
-        json.dump(self.presets, open(PRESET_FILE, 'w'))
-        print('Stored preset at', i)
+        self.preset.set_preset(i, self.serialize())
 
     def clear(self):
         self.clear_blackout()
