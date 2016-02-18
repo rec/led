@@ -1,6 +1,8 @@
 from __future__ import print_function
 
-import time, Saveable
+import time
+
+from . import Saveable
 
 class Looper(Saveable.Saveable):
     """Represents the state of a loop of events."""

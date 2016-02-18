@@ -1,6 +1,7 @@
 from __future__ import print_function
 
-import random, time, Saveable
+import random, time
+from . import Saveable
 
 from bibliopixel import animation, colors
 

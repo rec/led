@@ -2,7 +2,7 @@
 
 from __future__ import print_function
 
-from Processor import filterer, expo, basic
+from . Processor import filterer, expo, basic
 
 class Handler(object):
     def __init__(self, desc, function, *args, **kwds):
