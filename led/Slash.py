@@ -64,23 +64,31 @@ def call(name, args, kwds):
     function = import_function(name)
     return lambda x: function(*args, **kwds)
 
-
-def read(data, namespace):
+def to_function(data):
     assert data
     if instanceof(data, str):
         # It's a function.
         data = data[1:] if data.startswith('.') else namespace + data
         return import_function(data)
 
-    if instanceof(data, (list, tuple)):
-        # It's a maker of functions.
-        data = list(data)
-        len(data) < 2 and data.append([])
-        len(data) < 3 and data.append({})
-        assert(len(data) == 3)
-        name, args, kwds = data
-        return import_function(name)(*args, **kwds)
+    assert instanceof(data, (list, tuple))
+    # It's a maker of functions.
+    data = list(data)
+    len(data) < 2 and data.append([])
+    len(data) < 3 and data.append({})
+    assert(len(data) == 3)
+    name, args, kwds = data
+    args = args or []
+    kwds = kwds or {}
+    if not isinstance(args, (list, tuple)):
+        args = [args]
 
-    # Otherwise, it's recursively a slash dict.
-    assert instanceof(data, dict)
-    return OrderedDict((k, read(v, namespace)) for (k, v) in data.items()}
+    return import_function(name)(*args, **kwds)
+
+
+def read(data, namespace):
+    assert data
+    if isinstance(data, dict):
+        return OrderedDict((k, read(v, namespace)) for (k, v) in data.items()}
+    else:
+        return to_function(data)
