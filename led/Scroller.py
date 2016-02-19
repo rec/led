@@ -18,7 +18,7 @@ class Scroller(Saveable.Saveable):
 
     def scroll(self, led, steps):
         buf = led.buffer
-        steps = (self.delta * steps) % (len(buf) / 3);
+        steps = (self.delta * steps) % (len(buf) / 3)
         led.buffer = buf[-3 * steps:] + buf[:-3 * steps]
         # From https://stackoverflow.com/questions/9457832
 

@@ -1,6 +1,8 @@
 from __future__ import print_function
 
-import curses
+from collections import OrderedDict
+
+from . Importer import import_function
 
 """
 How will the interface work?
@@ -24,8 +26,8 @@ return
 """
 
 SLASH = {
-    'c': ('command', {
-        'k': ('key', assign_command),
+    'command': {
+        'key': ('key', assign_command),
         'p': ('previous', previous),
         }),
     'h': ('help', do_help),
@@ -57,8 +59,28 @@ SLASH = {
         }),
     }
 
-def read_slash(input):
+
+def call(name, args, kwds):
+    function = import_function(name)
+    return lambda x: function(*args, **kwds)
 
 
-if __name__ == '__main__':
-    curses.wrapper(main)
+def read(data, namespace):
+    assert data
+    if instanceof(data, str):
+        # It's a function.
+        data = data[1:] if data.startswith('.') else namespace + data
+        return import_function(data)
+
+    if instanceof(data, (list, tuple)):
+        # It's a maker of functions.
+        data = list(data)
+        len(data) < 2 and data.append([])
+        len(data) < 3 and data.append({})
+        assert(len(data) == 3)
+        name, args, kwds = data
+        return import_function(name)(*args, **kwds)
+
+    # Otherwise, it's recursively a slash dict.
+    assert instanceof(data, dict)
+    return OrderedDict((k, read(v, namespace)) for (k, v) in data.items()}
