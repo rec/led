@@ -13,14 +13,17 @@ class Player(object):
     def __init__(self, internal_delay=4, number=80):
         driver = DriverSerial(num=number, type=LEDTYPE.LPD8806)
         self.led = bibliopixel.led.LEDStrip(driver)
+        self.led._internalDelay = internal_delay
+
         self.animation = bibliopixel.animation.BaseStripAnim(self.led)
         self.animation.step = self.step
 
-        self.led._internalDelay = internal_delay
-        self.scroller = Scroller.Scroller()
+        # This is NOT serialized.
         self.blacked_out = FlipFlop.FlipFlop('blackout')
+
+        self.scroller = Scroller.Scroller()
         self.looper = Looper.Looper()
-        self.handler = Handler.handler(self)
+        self.handler = Handler.handler()
         self.presets = Presets.Presets()
 
     def step(self, amt=1):
@@ -31,7 +34,7 @@ class Player(object):
     def keyboard(self, c):
         command = self.handler.get(c)
         if command:
-            command()
+            command(self)
             if c not in self.DONT_RECORD:
                 self.looper.event(c)
         else:

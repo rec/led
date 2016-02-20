@@ -14,31 +14,31 @@ class Handler(object):
     def __call__(self):
         return self.function(*args, **kwds)
 
-def handler(led):
+def handler():
     table = {
-        'q': lambda: led.exit(),
-        '+': lambda: led.scroller.change_speed(-10),
-        '=': lambda: led.scroller.change_speed(-10),
-        '-': lambda: led.scroller.change_speed(10),
-        '_': lambda: led.scroller.change_speed(10),
-        ' ': lambda: led.scroller.pause(),
-        '/': lambda: led.scroller.reverse(),
-        'b': lambda: led.blackout(),
-        'c': lambda: led.clear(),
-        'l': lambda: led.looper.play(),
-        'L': lambda: led.looper.record(),
-        'r': lambda: randomize(led, basic),
-        's': lambda: randomize(led, expo),
-        't': lambda: randomize(led, filterer(expo, 0.50)),
-        'u': lambda: randomize(led, filterer(basic, 0.50)),
-        'v': lambda: randomize(led, filterer(expo, 0.20)),
-        'w': lambda: randomize(led, filterer(basic, 0.20)),
-        'x': lambda: randomize(led, filterer(expo, 0.08)),
-        'y': lambda: randomize(led, filterer(basic, 0.12)),
+        'q': lambda led: led.exit(),
+        '+': lambda led: led.scroller.change_speed(-10),
+        '=': lambda led: led.scroller.change_speed(-10),
+        '-': lambda led: led.scroller.change_speed(10),
+        '_': lambda led: led.scroller.change_speed(10),
+        ' ': lambda led: led.scroller.pause(),
+        '/': lambda led: led.scroller.reverse(),
+        'b': lambda led: led.blackout(),
+        'c': lambda led: led.clear(),
+        'l': lambda led: led.looper.play(),
+        'L': lambda led: led.looper.record(),
+        'r': lambda led: randomize(led, basic),
+        's': lambda led: randomize(led, expo),
+        't': lambda led: randomize(led, filterer(expo, 0.50)),
+        'u': lambda led: randomize(led, filterer(basic, 0.50)),
+        'v': lambda led: randomize(led, filterer(expo, 0.20)),
+        'w': lambda led: randomize(led, filterer(basic, 0.20)),
+        'x': lambda led: randomize(led, filterer(expo, 0.08)),
+        'y': lambda led: randomize(led, filterer(basic, 0.12)),
         }
 
     def presets(i):
-        return lambda: led.preset(i), lambda: led.set_preset(i)
+        return lambda led: led.preset(i), lambda led: led.set_preset(i)
 
     digits = '0123456789'
     shifts = ')!@#$%^&*('
