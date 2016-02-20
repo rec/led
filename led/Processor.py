@@ -1,5 +1,3 @@
-#!/usr/bin/env python2.7
-
 from __future__ import print_function
 
 import random
@@ -34,3 +32,10 @@ def filterer(rand, ratio):
 
 def expo(i=None):
     return random.expovariate(1 / 127.0)
+
+# "Classic" randomize
+def randomize(led, randomizer=lambda: random.randint(0, 255)):
+    led.clear_blackout()
+    print('randomizing')
+    for i in xrange(len(led.led.buffer)):
+        led.led.buffer[i] = int(max(0, min(255, randomizer())))

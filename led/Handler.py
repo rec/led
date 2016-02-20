@@ -2,7 +2,7 @@
 
 from __future__ import print_function
 
-from . Processor import filterer, expo, basic
+from . Processor import basic, expo, filterer, randomize
 
 class Handler(object):
     def __init__(self, desc, function, *args, **kwds):
@@ -27,14 +27,14 @@ def handler(led):
         'c': lambda: led.clear(),
         'l': lambda: led.looper.play(),
         'L': lambda: led.looper.record(),
-        'r': lambda: led.randomize(basic),
-        's': lambda: led.randomize(expo),
-        't': lambda: led.randomize(filterer(expo, 0.50)),
-        'u': lambda: led.randomize(filterer(basic, 0.50)),
-        'v': lambda: led.randomize(filterer(expo, 0.20)),
-        'w': lambda: led.randomize(filterer(basic, 0.20)),
-        'x': lambda: led.randomize(filterer(expo, 0.08)),
-        'y': lambda: led.randomize(filterer(basic, 0.12)),
+        'r': lambda: randomize(led, basic),
+        's': lambda: randomize(led, expo),
+        't': lambda: randomize(led, filterer(expo, 0.50)),
+        'u': lambda: randomize(led, filterer(basic, 0.50)),
+        'v': lambda: randomize(led, filterer(expo, 0.20)),
+        'w': lambda: randomize(led, filterer(basic, 0.20)),
+        'x': lambda: randomize(led, filterer(expo, 0.08)),
+        'y': lambda: randomize(led, filterer(basic, 0.12)),
         }
 
     def presets(i):

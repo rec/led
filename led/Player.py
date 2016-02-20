@@ -38,12 +38,6 @@ class Player(bibliopixel.animation.BaseStripAnim):
     def clear_blackout(self):
         self.blacked_out and self.blackout()
 
-    def randomize(self, randomizer=lambda: random.randint(0, 255)):
-        self.clear_blackout()
-        print('randomizing')
-        for i in xrange(len(self.led.buffer)):
-            self.led.buffer[i] = int(max(0, min(255, randomizer())))
-
     def blackout(self):
         if not self.blacked_out:
             self.saved = self.led.buffer
