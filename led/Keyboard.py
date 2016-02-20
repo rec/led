@@ -2,7 +2,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 # From https://stackoverflow.com/questions/9865446
 
-import termios, fcntl, sys, os, threading
+import termios, fcntl, sys, os
 
 def keyboard(callback, exit='q'):
     fd = sys.stdin.fileno()
@@ -27,11 +27,3 @@ def keyboard(callback, exit='q'):
     finally:
         termios.tcsetattr(fd, termios.TCSAFLUSH, oldterm)
         fcntl.fcntl(fd, fcntl.F_SETFL, oldflags)
-
-def threaded(callback, **kwds):
-    t = threading.Thread(target=lambda: keyboard(callback), **kwds)
-    t.start()
-    return t
-
-if __name__ == '__main__':
-    threaded(lambda c: print('Keystroke', ord(c)))

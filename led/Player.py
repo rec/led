@@ -1,6 +1,6 @@
 from __future__ import print_function
 
-import copy, json, random
+import copy, json, random, serial
 from . import FlipFlop, Handler, Looper, Presets, Scroller
 
 from bibliopixel.drivers.serial_driver import DriverSerial, LEDTYPE
@@ -73,6 +73,16 @@ class Player(bibliopixel.animation.BaseStripAnim):
         self.clear_blackout()
         self.led.buffer = len(self.led.buffer) * [0]
 
+    def run_and_exit(self):
+        try:
+            self.run()
+        except KeyboardInterrupt:
+            pass
+        except serial.SerialException:
+            pass
+        self.exit()
+
     def exit(self):
+        self.stopThread()
         self.led.all_off()
         self.led.update()

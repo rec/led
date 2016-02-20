@@ -2,18 +2,14 @@
 
 from __future__ import print_function
 
-import serial
+import threading
 from led import Player, Keyboard
 
-player = Player.Player()
+def run():
+    player = Player.Player()
+    t1 = threading.Thread(target=Keyboard.keyboard, args=(player.keyboard,))
+    t2 = threading.Thread(target=player.run_and_exit)
+    t1.start()
+    t2.start()
 
-thread = Keyboard.threaded(player.keyboard)
-
-try:
-    player.run()
-except KeyboardInterrupt:
-    pass
-except serial.SerialException:
-    pass
-
-player.exit()
+run()
