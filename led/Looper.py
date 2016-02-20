@@ -2,9 +2,9 @@ from __future__ import print_function
 
 import time
 
-from . import Saveable
+from . import Serialize
 
-class Looper(Saveable.Saveable):
+class Looper(Serialize.Serializable):
     """Represents the state of a loop of events."""
     _IGNORE = ('loop_start', 'loop_index', )
 

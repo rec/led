@@ -1,11 +1,11 @@
 from __future__ import print_function
 
 import random, time
-from . import Saveable
+from . import Serialize
 
 from bibliopixel import animation, colors
 
-class Scroller(Saveable.Saveable):
+class Scroller(Serialize.Serializable):
     _IGNORE = ('last_time', )
 
     """Represents the state of a scrolling strip of LEDs."""

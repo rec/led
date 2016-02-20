@@ -1,6 +1,9 @@
 import json
 
-class Saveable(object):
+def serialize(x):
+    return getattr(x, 'serialize', lambda: x)()
+
+class Serializable(object):
     _BASE_IGNORE = ('serialize', 'deserialize')
     _IGNORE = ()
 
@@ -8,7 +11,9 @@ class Saveable(object):
         return k.startswith('_') or k in self._BASE_IGNORE or k in self._IGNORE
 
     def serialize(self):
-        return {k: v for (k, v) in self.__dict__.items() if not self._ignore(k)}
+        return {k: serialize(v)
+                for (k, v) in self.__dict__.items()
+                if not self._ignore(k)}
 
     @staticmethod
     def default(c):
