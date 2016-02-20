@@ -7,13 +7,15 @@ from bibliopixel.drivers.serial_driver import DriverSerial, LEDTYPE
 import bibliopixel.animation
 import bibliopixel.led
 
-class Player(bibliopixel.animation.BaseStripAnim):
+class Player(object):
     DONT_RECORD = 'lL0123456789)!@#$%^&*('
 
     def __init__(self, internal_delay=4, number=80):
         driver = DriverSerial(num=number, type=LEDTYPE.LPD8806)
         self.led = bibliopixel.led.LEDStrip(driver)
-        super(Player, self).__init__(self.led)
+        self.animation = bibliopixel.animation.BaseStripAnim(self.led)
+        self.animation.step = self.step
+
         self.led._internalDelay = internal_delay
         self.scroller = Scroller.Scroller()
         self.blacked_out = FlipFlop.FlipFlop('blackout')
@@ -22,7 +24,7 @@ class Player(bibliopixel.animation.BaseStripAnim):
         self.presets = Presets.Presets()
 
     def step(self, amt=1):
-        self._step += 1
+        self.animation._step += 1
         self.looper.step(self.keyboard)
         self.scroller.step(self.led)
 
@@ -69,7 +71,7 @@ class Player(bibliopixel.animation.BaseStripAnim):
 
     def run_and_exit(self):
         try:
-            self.run()
+            self.animation.run()
         except KeyboardInterrupt:
             pass
         except serial.SerialException:
@@ -77,6 +79,6 @@ class Player(bibliopixel.animation.BaseStripAnim):
         self.exit()
 
     def exit(self):
-        self.stopThread()
+        self.animation.stopThread()
         self.led.all_off()
         self.led.update()
