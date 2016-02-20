@@ -2,12 +2,8 @@ from __future__ import print_function
 
 import time
 
-from . import Serialize
-
-class Looper(Serialize.Serializable):
+class Looper(object):
     """Represents the state of a loop of events."""
-    _IGNORE = ('loop_start', 'loop_index', )
-
     RECORD, PAUSE, PLAY = 'record', 'pause', 'play'
 
     def __init__(self, state=PAUSE, events=None, loop_length=0):

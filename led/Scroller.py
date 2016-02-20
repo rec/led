@@ -5,9 +5,7 @@ from . import Serialize
 
 from bibliopixel import animation, colors
 
-class Scroller(Serialize.Serializable):
-    _IGNORE = ('last_time', )
-
+class Scroller(object):
     """Represents the state of a scrolling strip of LEDs."""
     def __init__(self, paused=False, frequency=2.0, accumulator=0.0, delta=1):
         self.paused = paused

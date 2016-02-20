@@ -1,23 +1,18 @@
-import json
+import inspect
 
 def serialize(x):
-    return getattr(x, 'serialize', lambda: x)()
+    if isinstance(x, (basestring, bool, float, int, long, type(None))):
+        return x
 
-class Serializable(object):
-    _BASE_IGNORE = ('serialize', 'deserialize')
-    _IGNORE = ()
+    if isinstance(x, dict):
+        return {k: serialize(v) for (k, v) in x.items()}
 
-    def _ignore(self, k):
-        return k.startswith('_') or k in self._BASE_IGNORE or k in self._IGNORE
+    if isinstance(x, (list, tuple)):
+        return [serialize(i) for i in x]
 
-    def serialize(self):
-        return {k: serialize(v)
-                for (k, v) in self.__dict__.items()
-                if not self._ignore(k)}
+    method = getattr(x, 'serialize', None)
+    if method:
+        return serialize(method())
 
-    @staticmethod
-    def default(c):
-        attr = getattr(c, 'serialize', None)
-        if not attr:
-            raise TypeError(repr(c) + ' is not JSON serializable')
-        return attr()
+    keys = inspect.getargspec(x.__init__).args[1:]
+    return {k: serialize(getattr(x, k)) for k in keys}

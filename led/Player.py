@@ -56,18 +56,18 @@ class Player(bibliopixel.animation.BaseStripAnim):
         self.clear_blackout()
         preset = self.presets.preset(i)
         if preset:
-            scroller, self.led.buffer, looper = preset
-            self.scroller = Scroller.Scroller(**scroller)
-            self.looper = Looper.Looper(**looper)
+            self.led.buffer = preset['buffer']
+            self.scroller = Scroller.Scroller(preset['scroller'])
+            self.looper = Looper.Looper(preset['looper'])
 
     def serialize(self):
-        return (self.scroller.serialize(),
-                copy.deepcopy(self.led.buffer),
-                self.looper.serialize())
+        return {'scroller': self.scroller,
+                'buffer': self.led.buffer,
+                'looper': self.looper}
 
     def set_preset(self, i):
         self.clear_blackout()
-        self.presets.set_preset(i, self.serialize())
+        self.presets.set_preset(i, self)
 
     def clear(self):
         self.clear_blackout()
