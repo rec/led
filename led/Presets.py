@@ -9,11 +9,10 @@ PRESET_FILE = '.presets'
 class Presets(object):
     def __init__(self, preset_size=10):
         try:
-            fp = open(PRESET_FILE)
+            self.presets = json.load(open(PRESET_FILE))
         except:
             self.presets = preset_size * [None]
-        else:
-            self.presets = json.load(fp)
+
         while len(self.presets) < preset_size:
             self.presets.append(None)
 

@@ -57,8 +57,8 @@ class Player(bibliopixel.animation.BaseStripAnim):
         preset = self.presets.preset(i)
         if preset:
             self.led.buffer = preset['buffer']
-            self.scroller = Scroller.Scroller(preset['scroller'])
-            self.looper = Looper.Looper(preset['looper'])
+            self.scroller = Scroller.Scroller(**preset['scroller'])
+            self.looper = Looper.Looper(**preset['looper'])
 
     def serialize(self):
         return {'scroller': self.scroller,
