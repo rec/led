@@ -1,6 +1,6 @@
 from __future__ import print_function
 
-import copy, json, random, serial
+import serial
 from . import Animation, FlipFlop, Handler, Looper, Presets, Scroller
 
 class Player(object):
@@ -61,7 +61,7 @@ class Player(object):
 
     def clear(self):
         self.clear_blackout()
-        self.buffer()[:] = len(self.animation._led.buffer) * [0]
+        self.buffer()[:] = len(self.buffer*() * [0])
 
     def run_and_exit(self):
         try:
@@ -70,7 +70,10 @@ class Player(object):
             pass
         except serial.SerialException:
             pass
-        self.exit()
+        except e:
+            print('Unhandled exception', e)
+        finally:
+            self.exit()
 
     def exit(self):
         self.animation.stopThread()
