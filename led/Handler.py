@@ -16,7 +16,7 @@ class Handler(object):
 
 def handler():
     table = {
-        'q': lambda led: led.exit(),
+        'q': lambda led: led.animation.exit(),
         '+': lambda led: led.scroller.change_speed(-10),
         '=': lambda led: led.scroller.change_speed(-10),
         '-': lambda led: led.scroller.change_speed(10),

@@ -1,13 +1,12 @@
 from __future__ import print_function
 
-import serial
 from . import Animation, FlipFlop, Handler, Looper, Presets, Scroller
 
 class Player(object):
     DONT_RECORD = 'lL0123456789)!@#$%^&*('
 
     def __init__(self, **kwds):
-        self.animation = Animation.animation(step=self.step, **kwds)
+        self.animation = Animation.Animation(step=self.step, **kwds)
         self.blacked_out = FlipFlop.FlipFlop('blackout')
 
         self.scroller = Scroller.Scroller()
@@ -16,7 +15,7 @@ class Player(object):
         self.presets = Presets.Presets()
 
     def buffer(self):
-        return self.animation._led.buffer
+        return self.animation.buffer()
 
     def step(self, amt=1):
         self.looper.step(self.keyboard)
@@ -64,18 +63,5 @@ class Player(object):
         self.buffer()[:] = len(self.buffer*() * [0])
 
     def run_and_exit(self):
-        try:
-            self.animation.run()
-        except KeyboardInterrupt:
-            pass
-        except serial.SerialException:
-            pass
-        except e:
-            print('Unhandled exception', e)
-        finally:
-            self.exit()
-
-    def exit(self):
-        self.animation.stopThread()
-        self.animation._led.all_off()
-        self.animation._led.update()
+        self.animation.run()
+        self.animation.exit()
