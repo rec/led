@@ -14,11 +14,9 @@ class Animation(object):
         led._internalDelay = period
         anim_name = 'Base' + (anim or geometry) + 'Anim'
         self.animation = getattr(bibliopixel.animation, anim_name)(led)
+        self.buffer = self.animation._led.buffer
         self.step = step
         self.animation.step = self.step_function
-
-    def buffer(self):
-        return self.animation._led.buffer
 
     def step_function(self, amt=1):
         self.animation._step += 1

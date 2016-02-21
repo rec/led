@@ -36,7 +36,7 @@ def expo(i=None):
 # "Classic" randomize
 def randomize(led, randomizer=lambda: random.randint(0, 255)):
     led.clear_blackout()
-    buf = led.buffer()
+    buf = led.buffer
     print('randomizing')
     for i in xrange(len(buf)):
         buf[i] = int(max(0, min(255, randomizer())))
