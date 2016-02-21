@@ -7,9 +7,7 @@ class Player(object):
     DONT_RECORD = 'lL0123456789)!@#$%^&*('
 
     def __init__(self, **kwds):
-        self.animation = Animation.animation(**kwds)
-        self.animation.step = self.step
-
+        self.animation = Animation.animation(step=self.step, **kwds)
         self.blacked_out = FlipFlop.FlipFlop('blackout')
 
         self.scroller = Scroller.Scroller()
@@ -21,7 +19,6 @@ class Player(object):
         return self.animation._led.buffer
 
     def step(self, amt=1):
-        self.animation._step += 1
         self.looper.step(self.keyboard)
         self.scroller.step(self.buffer())
 
