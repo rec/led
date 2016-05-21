@@ -3,13 +3,20 @@ from __future__ import print_function
 import serial
 
 from bibliopixel.drivers.serial_driver import DriverSerial, LEDTYPE
+from bibliopixel.drivers.visualizer import DriverVisualizer
+
 import bibliopixel.animation
 import bibliopixel.led
 
 class Animation(object):
     def __init__(self, step, period=4, number=80,
-                driver='LPD8806', geometry='Strip', anim=None):
-        ds = DriverSerial(num=number, type=getattr(LEDTYPE, driver))
+                 driver='visualizer', # 'LPD8806',
+                 geometry='Strip', anim=None):
+        if driver == 'visualizer':
+            ds = DriverVisualizer(num=number, pixelSize=8)
+        else:
+            ds = DriverSerial(num=number, type=getattr(LEDTYPE, driver))
+
         led = getattr(bibliopixel.led, 'LED' + geometry)(ds)
         led._internalDelay = period
         anim_name = 'Base' + (anim or geometry) + 'Anim'
