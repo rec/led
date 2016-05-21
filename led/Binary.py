@@ -43,7 +43,7 @@ binary_to_gray = bin_wrapper(binaryToGray)
 
 BIT_NUMBER = 10
 INT_MAX = 2 ** 10
-BINARY_REV = [fill(to_bin(i), BIT_NUMBER) for i in xrange(INT_MAX)]
+BINARY_REV = [fill(to_bin(i), BIT_NUMBER) for i in range(INT_MAX)]
 GRAY_REV = [binaryToGray(b) for b in BINARY]
 
 BINARY = [b[::-1] for b in BINARY_REV]

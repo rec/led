@@ -40,7 +40,7 @@ def handler():
 
     digits = '0123456789'
     shifts = ')!@#$%^&*('
-    for i in xrange(10):
+    for i in range(10):
         table[digits[i]], table[shifts[i]] = presets(i)
 
     return table

@@ -19,9 +19,10 @@ def keyboard(callback, exit='q'):
         while True:
             try:
                 ch = sys.stdin.read(1)
-                callback(ch)
-                if ch == exit:
-                    break
+                if ch:
+                    callback(ch)
+                    if ch == exit:
+                        break
             except IOError:
                 pass
     finally:

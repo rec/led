@@ -14,10 +14,8 @@ class Scroller(object):
         self.delta = delta
         self.last_time = time.time()
 
-    def scroll(self, buffer, steps):
-        steps = (self.delta * steps) % (len(buffer) / 3)
-        buffer[:] = buffer[-3 * steps:] + buffer[:-3 * steps]
-        # From https://stackoverflow.com/questions/9457832
+    def scroll(self, colors, steps):
+        colors.rotate(steps)
 
     def pause(self):
         self.paused = not self.paused

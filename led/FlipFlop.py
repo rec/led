@@ -14,7 +14,7 @@ class FlipFlop(object):
             else:
                 print('not', self.display_name)
 
-    def __nonzero__(self):
+    def __bool__(self):
         return self.state
 
     def serialize(self):
