@@ -9,8 +9,8 @@ import bibliopixel.animation
 import bibliopixel.led
 
 class Animation(object):
-    def __init__(self, step, period=4, number=80,
-                 driver='visualizer', # 'LPD8806',
+    def __init__(self, step, period=0.05, number=80,
+                 driver='LPD8806', # 'visualizer',
                  geometry='Strip', anim=None):
         if driver == 'visualizer':
             ds = DriverVisualizer(num=number, pixelSize=8)
@@ -36,8 +36,8 @@ class Animation(object):
             pass
         except serial.SerialException:
             pass
-        except e:
-            print('Unhandled exception', e)
+        except:
+            raise
         finally:
             self.exit()
 

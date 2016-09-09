@@ -58,7 +58,7 @@ class Player(object):
 
     def clear(self):
         self.clear_blackout()
-        self.colors[:] = [0] * len(self.colors)
+        self.colors.clear()
 
     def run_and_exit(self):
         self.animation.run()

@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
 
-import threading
-from led import Player, Keyboard
+import led, sys, threading
 
 def run(use_curses=False):
-    player = Player.Player()
+    player = led.Player.Player()
     t1 = threading.Thread(target=player.run_and_exit)
-    target = None if use_curses else Keyboard.keyboard
+    target = None if use_curses else led.Keyboard.keyboard
     t2 = threading.Thread(target=target, args=(player.keyboard,))
     t1.start()
     t2.start()
 
-run()
+if __name__ == '__main__':
+    run()
